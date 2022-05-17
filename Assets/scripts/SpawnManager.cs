@@ -8,30 +8,27 @@ public class SpawnManager : MonoBehaviour
     public GameObject enemyPrefab;
     public GameObject catchPrefab;
     public Vector2 spawnRange;
+    private Stats stats;
 
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating(nameof(SpawnEnemy), 0, 2.0f);
-        InvokeRepeating(nameof(SpawnPointCube), 0, 1.0f);
+        InvokeRepeating(nameof(SpawnEvade), 0, 2.0f);
+        InvokeRepeating(nameof(SpawnCatcher), 0, 1.0f);
     }
 
-
-    void SpawnPointCube()
+    private void SpawnCatcher()
     {
-
-        Vector3 pointSpawnPosition = new Vector3(
-        Random.Range(spawnRange[0], spawnRange[1]),
-        catchPrefab.transform.position.y,
-        catchPrefab.transform.position.z
-        );
-        Instantiate(
-catchPrefab,
-pointSpawnPosition,
-catchPrefab.transform.rotation
-);
+        SpawnEnemy(EnemyType.Catcher);
     }
-    void SpawnEnemy()
+
+    private void SpawnEvade()
+    {
+        SpawnEnemy(EnemyType.Enemy);
+    }
+
+
+    void SpawnEnemy(EnemyType enemyType)
     {
         Vector3 spawnPosition = new Vector3(
             Random.Range(spawnRange[0], spawnRange[1]), 
@@ -39,12 +36,23 @@ catchPrefab.transform.rotation
             enemyPrefab.transform.position.z
             );
 
+        if(enemyType == EnemyType.Enemy)
+        {
+            Instantiate(
+                enemyPrefab,
+                spawnPosition,
+                enemyPrefab.transform.rotation
+                );
+        } else
+        {
+            Instantiate(
+    catchPrefab,
+    spawnPosition,
+    catchPrefab.transform.rotation
+);
+        }
 
-        Instantiate(
-            enemyPrefab,
-            spawnPosition,
-            enemyPrefab.transform.rotation
-            );
+
 
 
     }

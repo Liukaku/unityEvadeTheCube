@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,15 +13,23 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        stats = GetComponent<Stats>();
         hudManager.UpdateHeathText("Health: " + stats.Health);
     }
     void Update()
     {
+
+
         float horizonalInput = Input.GetAxis("Horizontal");
         float inputZ = Input.GetAxis("Vertical");
         float yPos = transform.position.y;
         float futureXPos = transform.position.x + horizonalInput * stats.MoveSpeed * Time.deltaTime;
         float currentXPos = transform.position.x;
+
+        if (stats.Health <= 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
 
         if (futureXPos <= (lWall.position.x + 0.8f))
         {
